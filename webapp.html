@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    .scoreboard {
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      width: 60px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Number Guessing Game</h1>
+  <p>Guess a number between 1 and 10. First to 5 correct guesses wins!</p>
+  <div class="scoreboard">
+    Your Score: <span id="playerScore">0</span> |
+    Computer Score: <span id="computerScore">0</span>
+  </div>
+  <div>
+    <input type="number" id="playerGuess" min="1" max="10" />
+    <button onclick="playRound()">Guess!</button>
+  </div>
+  <div id="result"></div>
+
+  <script>
+    let playerScore = 0;
+    let computerScore = 0;
+
+    function playRound() {
+      const playerInput = document.getElementById("playerGuess");
+      const resultDiv = document.getElementById("result");
+      const playerGuess = parseInt(playerInput.value);
+
+      if (isNaN(playerGuess) || playerGuess < 1 || playerGuess > 10) {
+        resultDiv.textContent = "Please enter a number between 1 and 10.";
+        return;
+      }
+
+      const computerNumber = Math.floor(Math.random() * 10) + 1;
+      const computerGuess = Math.floor(Math.random() * 10) + 1;
+
+      let resultMsg = `You guessed ${playerGuess}. Computer chose ${computerNumber}. `;
+
+      if (playerGuess === computerNumber) {
+        playerScore++;
+        resultMsg += "You guessed right!";
+      } else {
+        resultMsg += "Wrong guess!";
+      }
+
+      if (computerGuess === playerGuess) {
+        computerScore++;
+        resultMsg += ` Computer guessed your number (${computerGuess}) correctly!`;
+      } else {
+        resultMsg += ` Computer guessed ${computerGuess} — incorrect.`;
+      }
+
+      document.getElementById("playerScore").textContent = playerScore;
+      document.getElementById("computerScore").textContent = computerScore;
+      resultDiv.textContent = resultMsg;
+
+      if (playerScore >= 5 || computerScore >= 5) {
+        const winner = playerScore > computerScore ? "You win!" : "Computer wins!";
+        alert(winner);
+        playerScore = 0;
+        computerScore = 0;
+        resultDiv.textContent = "";
+        document.getElementById("playerScore").textContent = 0;
+        document.getElementById("computerScore").textContent = 0;
+        playerInput.value = "";
+      }
+    }
+  </script>
+</body>
+</html>
